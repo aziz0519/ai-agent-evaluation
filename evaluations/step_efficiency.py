@@ -20,6 +20,7 @@ logger = logging.getLogger(__name__)
 
 metrics = [StepEfficiencyMetric(threshold=0.8,model=eval_model,include_reason=True)]
 
+failed_examples = []
 for example_number, golden in enumerate(dataset.evals_iterator(metrics=metrics), start=1):
     try:
         response = agent.invoke(
@@ -29,5 +30,9 @@ for example_number, golden in enumerate(dataset.evals_iterator(metrics=metrics),
         )
     except Exception:
         logger.exception("Evaluation example %d failed during agent invocation", example_number)
+        failed_examples.append(example_number)
         continue
-    
+
+if failed_examples:
+    logger.error("Agent invocation failed for examples: %s", failed_examples)
+    sys.exit(1)
