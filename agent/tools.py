@@ -34,11 +34,27 @@ def calculate_right_refund(user:str, items:list[PurchaseItem]) -> str:
         
         for item in items:
             if users_data[user].get(item.name):
-                total_refund += users_data[user][items.name]["price"]
+                total_refund += users_data[user][item.name]["price"]
                 
         return f"the value of the refund is: {total_refund}"
     
     
     return {"status": "there was no username found"}
+
+@tool
+def issue_refund_ticket(user:str, refund_amount:int) -> str:
+    """this tool will send a ticket to the right team to return the refund
+    """
     
+    logging.info(f"using issue_refund_ticket for user: {user}")
+    return f"a refund ticket has been issued successfully with the amount of {refund_amount}"
+
+@tool
+def get_today_date(user:str)->str:
+    "This tool will return today's date"
+    logging.info(f"using the date tool")
+    return date.today().isoformat()
+
+
+
     
