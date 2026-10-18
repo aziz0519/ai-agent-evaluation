@@ -22,7 +22,7 @@ dataset = EvaluationDataset(
             ]
         ),
         Golden(
-            input="I am user 123, I would like a refund for the book",
+            input="I am user123, I would like a refund for the book",
             expected_output="A refund ticket for 23$ has been issued successfully",
             expected_tools=[
                 ToolCall(name="get_user_purchase_history", input_parameters={ "user": "user123"}),
