@@ -1,0 +1,38 @@
+import logging
+import sys
+from pathlib import Path
+from uuid import uuid4
+
+sys.path.insert(
+    0,
+    str(Path(__file__).resolve().parents[1] / "agent")
+)
+
+from agent import agent 
+from dataset import dataset 
+from model import eval_model
+
+from deepeval.metrics import PlanQualityMetric
+from deepeval.integrations.langchain import CallbackHandler
+
+logger = logging.getLogger(__name__)
+
+
+metrics = [PlanQualityMetric(threshold=0.8,model=eval_model,include_reason=True)]
+
+failed_examples = []
+for example_number, golden in enumerate(dataset.evals_iterator(metrics=metrics), start=1):
+    try:
+        response = agent.invoke(
+            {"messages": [{ "role": "user", "content" : golden.input }]},
+            config={"configurable": {"thread_id": str(uuid4())},
+            "callbacks": [CallbackHandler()]}
+        )
+    except Exception:
+        logger.exception("Evaluation example %d failed during agent invocation", example_number)
+        failed_examples.append(example_number)
+        continue
+
+if failed_examples:
+    logger.error("Agent invocation failed for examples: %s", failed_examples)
+    sys.exit(1)

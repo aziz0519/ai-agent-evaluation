@@ -15,7 +15,7 @@ dataset = EvaluationDataset(
                     input_parameters={}
                 ),
                 ToolCall(name="calculate_right_refund", 
-                         input_parameters={"user": "user123", "items": [{"name","book"},{"name","pen"}]}
+                         input_parameters={"user": "user123", "items": [{"name":"book"},{"name":"pen"}]}
                 ),
                 ToolCall(name="issue_refund_ticket", 
                          input_parameters={"user": "user123", "refund_amount": 30}),
