@@ -13,7 +13,7 @@ from model import eval_model
 
 from deepeval.metrics import ToolCorrectnessMetric
 from deepeval.integrations.langchain import CallbackHandler
-from deepeval.test_case import LLMTestCase, ToolCall
+from deepeval.test_case import LLMTestCase, ToolCall, ToolCallParams
 from deepeval import evaluate
 from dotenv import load_dotenv
 
@@ -47,8 +47,14 @@ for golden in dataset.goldens:
     dataset.add_test_case(test_case)
 
 
-metrics = [ToolCorrectnessMetric(threshold=0.8,model=eval_model,include_reason=True)]
+metrics = [
+    ToolCorrectnessMetric(
+        threshold=0.8,
+        model=eval_model,
+        include_reason=True,
+        evaluation_params=[ToolCallParams.INPUT_PARAMETERS],
+    )
+]
 
 evaluate(test_cases=dataset.test_cases, metrics=metrics)
-
 
