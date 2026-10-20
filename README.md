@@ -27,3 +27,22 @@ uv run streamlit run evaluations/streamlit_ui.py
 The dashboard shows the average score and the passed/failed case counts for
 each metric. It can also display available metrics from the latest DeepEval run
 when a combined dashboard report has not been generated yet.
+
+### Deploying the dashboard to Databricks Apps
+
+The dashboard reads the combined report from
+`evaluations/.deepeval/.latest_dashboard_results.json` by default. The
+`.deepeval` directory is git-ignored, so the report is not included when the
+app is deployed from the repository.
+
+To provide the report in Databricks, store
+`.latest_dashboard_results.json` in a Unity Catalog volume, grant the app
+permission to read that file, and set the app environment variable
+`EVALUATION_RESULTS_PATH` to its full volume path, for example:
+
+```text
+/Volumes/<catalog>/<schema>/<volume>/.latest_dashboard_results.json
+```
+
+Alternatively, include the report at the default path in the app's deployed
+files. The dashboard displays a warning if it cannot find the report.

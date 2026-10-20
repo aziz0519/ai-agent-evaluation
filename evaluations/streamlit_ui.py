@@ -1,4 +1,5 @@
 import json
+import os
 from pathlib import Path
 
 import streamlit as st
@@ -14,7 +15,9 @@ METRIC_THRESHOLDS = {
     "Answer Correctness": 0.8,
 }
 
-RESULTS_PATH = Path(__file__).resolve().parent / ".deepeval" / ".latest_dashboard_results.json"
+DEFAULT_RESULTS_PATH = (
+    Path(__file__).resolve().parent / ".deepeval" / ".latest_dashboard_results.json"
+)
 DEEPEVAL_RESULTS_PATH = Path(__file__).resolve().parent / ".deepeval" / ".latest_run_full.json"
 DEEPEVAL_RESULT_PATHS = (
     Path.cwd() / ".deepeval" / ".latest_run_full.json",
@@ -42,8 +45,20 @@ def empty_metrics():
 
 
 def load_dashboard_results():
-    if RESULTS_PATH.exists():
-        data = json.loads(RESULTS_PATH.read_text(encoding="utf-8"))
+    configured_results_path = os.environ.get("EVALUATION_RESULTS_PATH")
+    results_path = Path(
+        configured_results_path or DEFAULT_RESULTS_PATH
+    ).expanduser()
+    if not results_path.is_absolute():
+        results_path = Path.cwd() / results_path
+
+    if configured_results_path and not results_path.is_file():
+        raise FileNotFoundError(
+            f"EVALUATION_RESULTS_PATH does not point to a file: {results_path}"
+        )
+
+    if results_path.exists():
+        data = json.loads(results_path.read_text(encoding="utf-8"))
         metrics = empty_metrics()
         for result in data.get("metrics", []):
             name = normalize_metric_name(result["name"])
@@ -105,6 +120,12 @@ def main():
         st.stop()
 
     st.caption(f"Data source: {source}")
+    if source == "no evaluation results":
+        st.warning(
+            "No evaluation report was found. The `.deepeval` directory is "
+            "git-ignored, so it is not included in normal deployments. Set "
+            "`EVALUATION_RESULTS_PATH` to the combined report file's path."
+        )
     if metadata.get("generated_at"):
         st.caption(f"Latest combined run: {metadata['generated_at']}")
     if metadata.get("test_case_count") is not None:
