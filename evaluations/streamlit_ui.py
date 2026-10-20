@@ -16,6 +16,10 @@ METRIC_THRESHOLDS = {
 
 RESULTS_PATH = Path(__file__).resolve().parent / ".deepeval" / ".latest_dashboard_results.json"
 DEEPEVAL_RESULTS_PATH = Path(__file__).resolve().parent / ".deepeval" / ".latest_run_full.json"
+DEEPEVAL_RESULT_PATHS = (
+    Path.cwd() / ".deepeval" / ".latest_run_full.json",
+    DEEPEVAL_RESULTS_PATH,
+)
 
 
 def normalize_metric_name(name):
@@ -54,8 +58,12 @@ def load_dashboard_results():
             }
         return metrics, data, "combined evaluation report"
 
-    if DEEPEVAL_RESULTS_PATH.exists():
-        data = json.loads(DEEPEVAL_RESULTS_PATH.read_text(encoding="utf-8"))
+    deepeval_results_path = next(
+        (path for path in DEEPEVAL_RESULT_PATHS if path.exists()),
+        None,
+    )
+    if deepeval_results_path is not None:
+        data = json.loads(deepeval_results_path.read_text(encoding="utf-8"))
         metrics = empty_metrics()
         scores = {name: [] for name in METRIC_THRESHOLDS}
 
@@ -115,10 +123,10 @@ def main():
                     f"{result['threshold']:.0%}."
                 ),
             )
-            if result["score"] is None:
-                st.caption("No recorded result yet.")
-            elif result["errors"]:
+            if result["errors"]:
                 st.caption(f"Evaluation errors: {result['errors']}")
+            elif result["score"] is None:
+                st.caption("No recorded result yet.")
 
     st.subheader("Passing rate by metric")
     chart_data = {

@@ -14,7 +14,7 @@
 * **Plan adherence:** Did it execution follow the plan?
 * **Tool correctness:** Did it call the expected tools?
 * **Argument correctness:** Argument correctness
-* **Answer correctness:** Did its final answer reach the expected comclusion?
+* **Answer correctness:** Did its final answer reach the expected conclusion?
 
 ## Evaluation Dashboard
 Run the combined evaluation to create a dashboard report, then launch Streamlit:
