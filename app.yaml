@@ -5,3 +5,5 @@ command:
 env:
   - name: STREAMLIT_GATHER_USAGE_STATS
     value: "false"
+  - name: EVALUATION_RESULTS_PATH
+    value: "/Volumes/pyspark_catalog/source/ai-evals/.latest_dashboard_results.json"
