@@ -14,4 +14,16 @@
 * **Plan adherence:** Did it execution follow the plan?
 * **Tool correctness:** Did it call the expected tools?
 * **Argument correctness:** Argument correctness
-* **Answer correctness:** Did its final answer reach the expected comclusion?
+* **Answer correctness:** Did its final answer reach the expected conclusion?
+
+## Evaluation Dashboard
+Run the combined evaluation to create a dashboard report, then launch Streamlit:
+
+```bash
+uv run python evaluations/eval_all.py
+uv run streamlit run evaluations/streamlit_ui.py
+```
+
+The dashboard shows the average score and the passed/failed case counts for
+each metric. It can also display available metrics from the latest DeepEval run
+when a combined dashboard report has not been generated yet.
