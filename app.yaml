@@ -6,4 +6,4 @@ env:
   - name: STREAMLIT_GATHER_USAGE_STATS
     value: "false"
   - name: EVALUATION_RESULTS_PATH
-    value: "/Volumes/pyspark_catalog/source/ai-evals/.latest_dashboard_results.json"
+    value: "/Volumes/agent-evaluation-catalog/ai-agent-schema/ai-agent-evals/.latest_dashboard_results.json"
