@@ -56,9 +56,22 @@ def load_dashboard_results():
         raise FileNotFoundError(
             f"EVALUATION_RESULTS_PATH does not point to a file: {results_path}"
         )
+    # Try to read the results file directly. Path.is_file() and
+    # Path.exists() may not work reliably with UC volume FUSE mounts
+    # inside the app container, so we attempt the read and catch errors.
+    try:
+        raw_text = results_path.read_text(encoding="utf-8")
+    except OSError:
+        if configured_results_path:
+            raise FileNotFoundError(
+                f"EVALUATION_RESULTS_PATH does not point to a file: {results_path}"
+            )
+        raw_text = None
 
     if results_path.exists():
         data = json.loads(results_path.read_text(encoding="utf-8"))
+    if raw_text is not None:
+        data = json.loads(raw_text)
         metrics = empty_metrics()
         for result in data.get("metrics", []):
             name = normalize_metric_name(result["name"])
