@@ -28,6 +28,17 @@ The dashboard shows the average score and the passed/failed case counts for
 each metric. It can also display available metrics from the latest DeepEval run
 when a combined dashboard report has not been generated yet.
 
+For local runs, set the report path with the `EVALUATION_RESULTS_PATH`
+environment variable or in `.streamlit/secrets.toml`:
+
+```toml
+[deepeval]
+results_path = "./evaluations/.deepeval/.latest_dashboard_results.json"
+```
+
+If the configured report cannot be read, the dashboard shows a warning and
+falls back to the default report locations instead of failing to start.
+
 ### Deploying the dashboard to Databricks Apps
 
 The dashboard reads the combined report from
