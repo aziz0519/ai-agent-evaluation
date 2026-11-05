@@ -19,6 +19,9 @@
 ## Evaluation Dashboard
 Run the combined evaluation to create a dashboard report, then launch Streamlit:
 
+### Screenshot from Streamlit App
+![EvalDashboard](Agent_Evaluation_Dashboard.png)
+
 ```bash
 uv run python evaluations/eval_all.py
 uv run streamlit run evaluations/streamlit_ui.py
