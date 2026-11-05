@@ -4,6 +4,7 @@ from pathlib import Path
 
 import streamlit as st
 
+APP_DIR = Path(__file__).resolve().parent
 
 METRIC_THRESHOLDS = {
     "Task Completion": 0.8,
@@ -16,14 +17,15 @@ METRIC_THRESHOLDS = {
 }
 
 DEFAULT_RESULTS_PATH = (
-    Path(__file__).resolve().parent / ".deepeval" / ".latest_dashboard_results.json"
+    APP_DIR / ".deepeval" / ".latest_dashboard_results.json"
 )
+
 DEEPEVAL_RESULTS_PATH = (
-    Path(__file__).resolve().parent / ".deepeval" / ".latest_run_full.json"
+    APP_DIR / ".deepeval" / ".latest_run_full.json"
 )
+
 DEEPEVAL_RESULT_PATHS = (
-    Path.cwd() / ".deepeval" / ".latest_run_full.json",
-    DEEPEVAL_RESULTS_PATH,
+    APP_DIR / ".deepeval" / ".latest_run_full.json",
 )
 
 
@@ -48,13 +50,23 @@ def empty_metrics():
     }
 
 
+
 def configured_results_path():
-    """Return the configured report path, if one was provided."""
+    """Resolve the configured evaluation report path."""
+
     path_value = os.environ.get("EVALUATION_RESULTS_PATH")
+
     if not path_value:
-        # Local runs can keep the path in .streamlit/secrets.toml.
         try:
-            path_value = st.secrets.get("deepeval", {}).get("results_path")
+            # Root-level Streamlit secret
+            path_value = st.secrets.get("EVALUATION_RESULTS_PATH")
+
+            # Alternatively, use [deepeval].results_path
+            if not path_value:
+                path_value = (
+                    st.secrets.get("deepeval", {}).get("results_path")
+                )
+
         except FileNotFoundError:
             path_value = None
 
@@ -62,8 +74,10 @@ def configured_results_path():
         return None
 
     results_path = Path(path_value).expanduser()
+
     if not results_path.is_absolute():
-        results_path = Path.cwd() / results_path
+        results_path = APP_DIR / results_path
+
     return results_path
 
 

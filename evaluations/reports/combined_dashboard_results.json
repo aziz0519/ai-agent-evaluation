@@ -1,0 +1,62 @@
+{
+  "generated_at": "2026-10-20T04:00:06.735785+00:00",
+  "test_case_count": 7,
+  "metrics": [
+    {
+      "name": "Task Completion",
+      "average_score": 0.85,
+      "passed": 6,
+      "failed": 1,
+      "errors": 0,
+      "threshold": 0.8
+    },
+    {
+      "name": "Step Efficiency",
+      "average_score": 0.9642857142857143,
+      "passed": 6,
+      "failed": 1,
+      "errors": 0,
+      "threshold": 0.8
+    },
+    {
+      "name": "Plan Quality",
+      "average_score": 0.5357142857142857,
+      "passed": 1,
+      "failed": 6,
+      "errors": 0,
+      "threshold": 0.8
+    },
+    {
+      "name": "Plan Adherence",
+      "average_score": 0.9285714285714286,
+      "passed": 6,
+      "failed": 1,
+      "errors": 0,
+      "threshold": 0.8
+    },
+    {
+      "name": "Tool Correctness",
+      "average_score": 0.8095238095238095,
+      "passed": 3,
+      "failed": 4,
+      "errors": 0,
+      "threshold": 0.9
+    },
+    {
+      "name": "Argument Correctness",
+      "average_score": 0.7142857142857143,
+      "passed": 3,
+      "failed": 4,
+      "errors": 0,
+      "threshold": 0.8
+    },
+    {
+      "name": "Answer Correctness",
+      "average_score": 0.9857142857142858,
+      "passed": 7,
+      "failed": 0,
+      "errors": 0,
+      "threshold": 0.8
+    }
+  ]
+}
