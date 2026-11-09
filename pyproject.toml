@@ -12,3 +12,18 @@ dependencies = [
     "portalocker[win32]>=4.4.1",
     "streamlit>=1.50.0",
 ]
+
+# Baseline existing rule/file pairs; other Ruff findings remain blocking.
+[tool.ruff.lint.per-file-ignores]
+"agent/agent.py" = ["I001"]
+"agent/objects.py" = ["I001"]
+"agent/tools.py" = ["I001", "LOG015"]
+"evaluations/answer_correctness.py" = ["I001"]
+"evaluations/argument_correctness.py" = ["I001"]
+"evaluations/eval_all.py" = ["I001", "UP017", "ISC004"]
+"evaluations/plan_adherence.py" = ["I001"]
+"evaluations/plan_quality.py" = ["I001"]
+"evaluations/step_efficiency.py" = ["I001"]
+"evaluations/streamlit_ui.py" = ["TRY004"]
+"evaluations/task_completion.py" = ["I001"]
+"evaluations/tool_correctness.py" = ["I001"]

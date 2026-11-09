@@ -52,7 +52,7 @@ def issue_refund_ticket(user:str, refund_amount:int) -> str:
 @tool
 def get_today_date(user:str)->str:
     "This tool will return today's date"
-    logging.info(f"using the date tool")
+    logging.info("using the date tool")
     return date.today().isoformat()
 
 
