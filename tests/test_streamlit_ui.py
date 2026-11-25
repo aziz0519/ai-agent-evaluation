@@ -1,6 +1,8 @@
 import json
 from unittest.mock import patch
 
+import pytest
+
 from evaluations.streamlit_ui import (
     configured_results_path,
     empty_metrics,
@@ -67,6 +69,11 @@ class TestConfiguredResultsPath:
 
 
 class TestLoadDashboardResults:
+    @pytest.fixture(autouse=True)
+    def isolate_report_inputs(self, tmp_path, monkeypatch):
+        monkeypatch.delenv("EVALUATION_RESULTS_PATH", raising=False)
+        monkeypatch.chdir(tmp_path)
+
     def test_loads_combined_report_from_default_path(self, tmp_path, monkeypatch):
         report_dir = tmp_path / "evaluations" / ".deepeval"
         report_dir.mkdir(parents=True, exist_ok=True)

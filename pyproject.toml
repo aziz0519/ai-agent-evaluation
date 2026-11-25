@@ -38,7 +38,7 @@ dev = [
 testpaths = ["tests", "evaluations"]
 python_files = ["test_*.py"]
 python_functions = ["test_*"]
-addopts = "--cov=evaluations --cov=agent --cov-report=term-missing"
+addopts = "-m 'not integration' --cov=evaluations --cov=agent --cov-report=term-missing"
 markers = [
     "integration: tests that require live API keys and external services"
 ]

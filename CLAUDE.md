@@ -12,8 +12,23 @@ uv run python evaluations/eval_all.py # run all 7 metrics, write the dashboard r
 uv run streamlit run evaluations/streamlit_ui.py
 ```
 
-There is no pytest suite in this repo. The tests are the DeepEval metric scripts. A single metric can be
-run on its own, for example `uv run python evaluations/task_completion.py`.
+<!-- coderabbit-ai-generated:v1 -->
+
+<!-- coderabbit-ai-generated-section:v1:775cb0adcf727ee2d755ae54340f37c76d87be49ad2b9e718f05a1dc20a3dade -->
+
+Install the development dependencies and run the pytest suite:
+
+```bash
+uv sync --locked --extra dev
+uv run pytest
+```
+
+Pytest deselects tests marked `integration` by default. To run only those tests, export
+`OPENAI_API_KEY` and run `uv run pytest -m integration`.
+
+To run a single DeepEval metric directly, use `uv run python evaluations/task_completion.py`.
+
+<!-- /coderabbit-ai-generated:v1 -->
 
 Linting uses Ruff, and it is enforced in CI:
 
