@@ -8,13 +8,7 @@
 
 
 ## Evaluation Metrics
-* **Task completion:** Did the agent accomplish the user's task?
-* **Step efficiency:** Did it avoid redundant and unnecessary steps?
-* **Plan quality:** Was the plan suitable to the task?
-* **Plan adherence:** Did it execution follow the plan?
-* **Tool correctness:** Did it call the expected tools?
-* **Argument correctness:** Argument correctness
-* **Answer correctness:** Did its final answer reach the expected conclusion?
+![AgentEval](./AI-Agent-Evaluation.png)
 
 ## Evaluation Dashboard
 Run the combined evaluation to create a dashboard report, then launch Streamlit:

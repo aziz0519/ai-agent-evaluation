@@ -13,6 +13,12 @@ dependencies = [
     "streamlit>=1.50.0",
 ]
 
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=5.0",
+]
+
 # Baseline existing rule/file pairs; other Ruff findings remain blocking.
 [tool.ruff.lint.per-file-ignores]
 "agent/agent.py" = ["I001"]
@@ -27,3 +33,12 @@ dependencies = [
 "evaluations/streamlit_ui.py" = ["TRY004"]
 "evaluations/task_completion.py" = ["I001"]
 "evaluations/tool_correctness.py" = ["I001"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "evaluations"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+addopts = "-m 'not integration' --cov=evaluations --cov=agent --cov-report=term-missing"
+markers = [
+    "integration: tests that require live API keys and external services"
+]

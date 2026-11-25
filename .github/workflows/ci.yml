@@ -24,13 +24,16 @@ jobs:
         uses: astral-sh/setup-uv@v6
 
       - name: Install project dependencies
-        run: uv sync --locked
+        run: uv sync --locked --extra dev
 
       - name: Install Ruff
         run: uv pip install --python .venv/bin/python ruff
 
       - name: Lint
         run: .venv/bin/ruff check .
+
+      - name: Run tests
+        run: uv run pytest -x --ignore=tests/test_integration.py
 
       - name: Build Docker image
         run: docker build --tag ai-agent-evaluation:ci .

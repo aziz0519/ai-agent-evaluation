@@ -56,7 +56,22 @@ def normalize_metric_name(name):
     return name
 
 
-def write_dashboard_results(trace_result, single_turn_result, test_case_count):
+def extract_tools_called(response_messages):
+    """Extract tool calls from agent response messages into ToolCall objects."""
+    tools_called = []
+    for message in response_messages:
+        for tool_call in getattr(message, "tool_calls", []) or []:
+            tools_called.append(
+                ToolCall(
+                    name=tool_call["name"],
+                    input_parameters=tool_call["args"],
+                )
+            )
+    return tools_called
+
+
+def build_metric_results_payload(trace_result, single_turn_result, test_case_count):
+    """Build the metrics payload for the dashboard report from evaluation results."""
     metric_results = {
         name: {
             "scores": [],
@@ -103,17 +118,25 @@ def write_dashboard_results(trace_result, single_turn_result, test_case_count):
             }
         )
 
-    report_path = Path(__file__).resolve().parent / ".deepeval" / ".latest_dashboard_results.json"
+    return {
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "test_case_count": test_case_count,
+        "metrics": metrics,
+    }
+
+
+def get_dashboard_report_path():
+    """Return the default dashboard report path."""
+    return Path(__file__).resolve().parent / ".deepeval" / ".latest_dashboard_results.json"
+
+
+def write_dashboard_results(trace_result, single_turn_result, test_case_count):
+    """Write the dashboard report to the default location."""
+    payload = build_metric_results_payload(trace_result, single_turn_result, test_case_count)
+    report_path = get_dashboard_report_path()
     report_path.parent.mkdir(parents=True, exist_ok=True)
     report_path.write_text(
-        json.dumps(
-            {
-                "generated_at": datetime.now(timezone.utc).isoformat(),
-                "test_case_count": test_case_count,
-                "metrics": metrics,
-            },
-            indent=2,
-        ),
+        json.dumps(payload, indent=2),
         encoding="utf-8",
     )
 
